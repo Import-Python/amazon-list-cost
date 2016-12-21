@@ -11,22 +11,27 @@ $('#amazon_cost_calc').css('border-top-right-radius', '10px');
 $('#amazon_cost_calc').css('text-align', 'center');
 function getCost(name_of_list) {
 	var data = "";
-  var corner = "";
+  	var corner = "";
 	var total_cost = 0;
 
 	$('.a-color-price.a-text-bold').each(function(i, obj) {
 	  var text = $(obj).text();
-		var id = $(obj).attr('id')
-		id = id.replace('itemPrice_', '');
-		text = text.replace(/ /g,'');
-		text = text.replace('$','');
+	  var cost = 0;
+	  var id = $(obj).attr('id')
+	  id = id.replace('itemPrice_', '');
+	  text = text.replace(/ /g,'');
+	  text = text.replace('$','');
+
+		
+	  /* Fix $NaN issue if a product is 'Currently unavailable' */
+	  if (text.length > 3) {	
 		cost = parseFloat(text)
 		if($("#itemRequested_" + id).length > 0) {
 			cost = cost * parseFloat($("#itemRequested_" + id).text());
-		}
-
-
- 	  total_cost = cost + total_cost;
+		
+	        }
+ 	     total_cost = cost + total_cost;
+ 	  }
 	});
 	data = name_of_list + ' - <span style="color: gray;">Total List Cost: </span> <span class="a-color-price">$' + total_cost.toFixed(2) + '</span>';
   corner = '<h2><span style="color: black;">List Cost</span><br/> <span class="a-color-price">$' + total_cost.toFixed(2) + '</span><h2>';
